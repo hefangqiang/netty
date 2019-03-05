@@ -16,7 +16,7 @@ public class MyPackEncoder extends MessageToByteEncoder{
     @Override
     protected void encode(ChannelHandlerContext ctx, Object msg, ByteBuf out) throws Exception {
         MessagePack messagePack = new MessagePack();
-        byte[] bytes = messagePack.write(msg);
-        out.writeBytes(bytes);
+        byte[] bytes = messagePack.write(msg);//将对象序列成字节流
+        out.writeBytes(bytes);//将字节流信息传入下一个ChannelHandler
     }
 }

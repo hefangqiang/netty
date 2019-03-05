@@ -43,8 +43,6 @@ public class Server {
             e.printStackTrace();
             eventLoopGroup.shutdownGracefully();
         }
-
-
     }
 
     public static void main(String[] args) {

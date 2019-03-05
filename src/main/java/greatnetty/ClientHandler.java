@@ -13,7 +13,6 @@ import io.netty.util.CharsetUtil;
  **/
 public class ClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
-
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         System.out.println("客户端连接到服务器，开始发送数据");
