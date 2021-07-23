@@ -10,9 +10,9 @@ import org.msgpack.annotation.Message;
  **/
 @Message
 public class UserInfo {
-   private  String name;
-   private  String sex;
-   private  int age;
+    private String name;
+    private String sex;
+    private int age;
 
     public UserInfo() { //默认构造参数一定要 不然messagePack报错
     }

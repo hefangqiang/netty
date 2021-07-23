@@ -20,37 +20,38 @@ public class Client {
     private int port;
     private String host;
 
-    public Client(String host,int port ) {
+    public Client(String host, int port) {
         this.port = port;
         this.host = host;
     }
 
     private void start() {
-        EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
+        EventLoopGroup bossGroup = new NioEventLoopGroup();
         try {
-        Bootstrap bootstrap = new Bootstrap();
-        bootstrap.remoteAddress(host,port)
-                .group(eventLoopGroup)
-                .channel(NioSocketChannel.class)
-                .handler(new ChannelInitializer<SocketChannel>() {
-                    protected void initChannel(SocketChannel ch) throws Exception {
-                        ch.pipeline().addLast(new LengthFieldPrepender(2));//设置报文头最大长度2个字节
-                        ch.pipeline().addLast(new MyPackEncoder());//将对象序列化成二进制流
-                        ch.pipeline().addLast(new DelimiterBasedFrameDecoder(1024,
-                                Unpooled.copiedBuffer("@".getBytes())));//通过分隔符拆分服务端发送的数据
-                        ch.pipeline().addLast(new ClientHandler());
-                    }
-                });
+            Bootstrap bootstrap = new Bootstrap();
+            bootstrap.remoteAddress(host, port)
+                    .group(bossGroup)
+                    .channel(NioSocketChannel.class)
+                    .handler(new ChannelInitializer<SocketChannel>() {
+                        protected void initChannel(SocketChannel ch) throws Exception {
+                            ch.pipeline().addLast(new LengthFieldPrepender(2));//设置报文头最大长度2个字节
+                            ch.pipeline().addLast(new MyPackEncoder());//将对象序列化成二进制流
+                            ch.pipeline().addLast(new DelimiterBasedFrameDecoder(1024,
+                                    Unpooled.copiedBuffer("@".getBytes())));//通过分隔符拆分服务端发送的数据
+                            ch.pipeline().addLast(new ClientHandler());
+                        }
+                    });
             ChannelFuture channelFuture = bootstrap.connect().sync();
             channelFuture.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             e.printStackTrace();
-            eventLoopGroup.shutdownGracefully();
+        } finally {
+            bossGroup.shutdownGracefully();
         }
 
     }
 
     public static void main(String[] args) {
-        new Client("127.0.0.1",9672).start();
+        new Client("127.0.0.1", 9672).start();
     }
 }
