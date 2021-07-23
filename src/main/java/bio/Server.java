@@ -18,13 +18,11 @@ public class Server {
             Socket socket = serverSocket.accept();
             InputStream inputStream = socket.getInputStream();
             byte[] b = new byte[1024];
-            int len=0;
+            int len = 0;
             inputStream.read(b);
 
 
-
-
-            System.out.println("服务端接收到数据："+new String(b));
+            System.out.println("服务端接收到数据：" + new String(b));
 
 
             socket.getOutputStream().write("你好客户端".getBytes());

@@ -17,7 +17,7 @@ public class Client {
     private int port;
     private String host;
 
-    public Client(String host,int port ) {
+    public Client(String host, int port) {
         this.port = port;
         this.host = host;
     }
@@ -25,15 +25,15 @@ public class Client {
     private void start() {
         EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
         try {
-        Bootstrap bootstrap = new Bootstrap();
-        bootstrap.remoteAddress(host,port)
-                .group(eventLoopGroup)
-                .channel(NioSocketChannel.class)
-                .handler(new ChannelInitializer<SocketChannel>() {
-                    protected void initChannel(SocketChannel ch) throws Exception {
-                        ch.pipeline().addLast(new ClientHandler());
-                    }
-                });
+            Bootstrap bootstrap = new Bootstrap();
+            bootstrap.remoteAddress(host, port)
+                    .group(eventLoopGroup)
+                    .channel(NioSocketChannel.class)
+                    .handler(new ChannelInitializer<SocketChannel>() {
+                        protected void initChannel(SocketChannel ch) throws Exception {
+                            ch.pipeline().addLast(new ClientHandler());
+                        }
+                    });
             ChannelFuture channelFuture = bootstrap.connect().sync();
             channelFuture.channel().closeFuture().sync();
         } catch (InterruptedException e) {
@@ -45,8 +45,7 @@ public class Client {
     }
 
 
-
     public static void main(String[] args) {
-        new Client("192.168.43.45",9672).start();
+        new Client("127.0.0.1", 9672).start();
     }
 }

@@ -16,9 +16,9 @@ public class ClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        for (int i = 0; i <10 ; i++) {
-            String sends="1111111111";
-            System.out.println("客户端开始发送数据："+sends);
+        for (int i = 0; i < 1; i++) {
+            String sends = "1111111111";
+            System.out.println("客户端开始发送数据：" + sends);
             ctx.writeAndFlush(Unpooled.copiedBuffer(sends.getBytes()));
         }
 
@@ -26,7 +26,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
-        System.out.println("客户端接收到："+msg.toString(CharsetUtil.UTF_8));
+        System.out.println("客户端接收到：" + msg.toString(CharsetUtil.UTF_8));
     }
 
     @Override

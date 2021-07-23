@@ -18,7 +18,7 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         ByteBuf byteBuf = (ByteBuf) msg;
-        System.out.println("服务器端接受到客户端信息："+byteBuf.toString(CharsetUtil.UTF_8));
+        System.out.println("服务器端接受到客户端信息：" + byteBuf.toString(CharsetUtil.UTF_8));
         //数据可能没有全部读完
         //ctx.write(byteBuf);
     }
@@ -26,8 +26,8 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
     //服务端读完网络数据后，做的处理
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-       ctx.writeAndFlush(Unpooled.copiedBuffer("你好，客户端",CharsetUtil.UTF_8))
-               .addListener(ChannelFutureListener.CLOSE);//flush完后关闭连接
+        ctx.writeAndFlush(Unpooled.copiedBuffer("你好，客户端", CharsetUtil.UTF_8))
+                .addListener(ChannelFutureListener.CLOSE);//flush完后关闭连接
     }
 
 

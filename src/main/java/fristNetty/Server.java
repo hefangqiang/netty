@@ -24,17 +24,21 @@ public class Server {
     }
 
     private void start() {
+        final ServerHandler serverHandler1 = new ServerHandler();
+        final ServerHandler2 serverHandler2 = new ServerHandler2();
+
         EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
         try {
-        ServerBootstrap serverBootstrap = new ServerBootstrap();
-        serverBootstrap.group(eventLoopGroup)
-                .channel(NioServerSocketChannel.class)
-                .localAddress(port)
-                .childHandler(new ChannelInitializer<SocketChannel>() {
-                    protected void initChannel(SocketChannel ch) throws Exception {
-                         ch.pipeline().addLast(new ServerHandler());
-                    }
-                });
+            ServerBootstrap serverBootstrap = new ServerBootstrap();
+            serverBootstrap.group(eventLoopGroup)
+                    .channel(NioServerSocketChannel.class)
+                    .localAddress(port)
+                    .childHandler(new ChannelInitializer<SocketChannel>() {
+                        protected void initChannel(SocketChannel ch) throws Exception {
+                            ch.pipeline().addLast(serverHandler1);
+                            ch.pipeline().addLast(serverHandler2);
+                        }
+                    });
             ChannelFuture channelFuture = serverBootstrap.bind().sync();
             channelFuture.channel().closeFuture().sync();
         } catch (InterruptedException e) {
@@ -47,7 +51,7 @@ public class Server {
 
     public static void main(String[] args) {
         System.out.println("开始启动服务端。。。");
-       new Server(9672).start();
+        new Server(9672).start();
         System.out.println("服务端关闭");
     }
 }
